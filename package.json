@@ -1,1 +1,9 @@
-
+{
+  "name": "tv-binance-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.18.2",
+    "binance-api-node": "^0.12.9"
+  }
+}
