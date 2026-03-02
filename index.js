@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 
-// Route test bot sống
+// Test bot sống
 app.get("/", (req, res) => {
   res.send("Bot đang chạy");
 });
@@ -11,9 +11,9 @@ app.get("/", (req, res) => {
 // Webhook nhận tín hiệu
 app.post("/webhook", (req, res) => {
   console.log("Tín hiệu nhận:", req.body);
-  res.send("ĐÃ NHẬN");
+  res.send("Đã nhận");
 });
 
 app.listen(3000, () => {
-  console.log("Server chạy cổng 3000");
+  console.log("Máy chủ chạy cổng 3000");
 });
