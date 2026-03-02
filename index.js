@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json());
 
 // ==== API BINANCE ====
-const API_KEY = "API_KEY_CỦA_BẠN";
-const SECRET_KEY = "SECRET_KEY_CỦA_BẠN";
+const API_KEY = "sUBsM6KILTaSZ8qvI6cf1kOeywADTsmHPjYF7LCSfjBAr2s4DrGHnOOcxGo97VJx";
+const SECRET_KEY = "u6V8pRI9dmtfMhqR3lomkv2Bx3zsPssMYQECYwezVlNptnNwlbGJgmvOYLGBVIey";
 
 // ==== CÀI ĐẶT ====
 const SYMBOL = "BTCUSDT";
