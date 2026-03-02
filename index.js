@@ -1,25 +1,38 @@
-import express from "express";
+import Binance from "binance-api-node";
 
-const app = express();
-app.use(express.json());
-
-// test homepage
-app.get("/", (req, res) => {
-  res.send("Bot is running 🚀");
+// kết nối Binance
+const client = Binance.default({
+  apiKey: process.env.BINANCE_API_KEY,
+  apiSecret: process.env.BINANCE_SECRET_KEY,
+  futures: true
 });
 
-// nhận webhook từ TradingView
-app.post("/webhook", (req, res) => {
-  console.log("🔥 Webhook received!");
-  console.log("Body:", JSON.stringify(req.body, null, 2));
+// nhận tín hiệu TradingView
+app.post("/webhook", async (req, res) => {
+  try {
+    const { side, symbol } = req.body;
 
-  res.status(200).json({
-    status: "received",
-    data: req.body
-  });
-});
+    console.log("📩 Signal:", req.body);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+    if (!side || !symbol) {
+      return res.status(400).send("Invalid signal");
+    }
+
+    let orderSide = side === "buy" ? "BUY" : "SELL";
+
+    await client.futuresOrder({
+      symbol: symbol.replace(".P", ""),
+      side: orderSide,
+      type: "MARKET",
+      quantity: 1
+    });
+
+    console.log("✅ Order sent to Binance");
+
+    res.status(200).send("Trade executed");
+
+  } catch (err) {
+    console.error("❌ Trade error:", err);
+    res.status(500).send("Trade failed");
+  }
 });
