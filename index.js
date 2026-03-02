@@ -1,4 +1,13 @@
+import express from "express";
 import Binance from "binance-api-node";
+
+const app = express();
+app.use(express.json());
+
+// test homepage
+app.get("/", (req, res) => {
+  res.send("Bot is running 🚀");
+});
 
 // kết nối Binance
 const client = Binance.default({
@@ -35,4 +44,9 @@ app.post("/webhook", async (req, res) => {
     console.error("❌ Trade error:", err);
     res.status(500).send("Trade failed");
   }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });
