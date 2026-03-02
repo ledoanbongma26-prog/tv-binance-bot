@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
   res.send("Bot is running 🚀");
 });
 
-// kết nối Binance
+// kết nối Binance Futures
 const client = Binance.default({
   apiKey: process.env.BINANCE_API_KEY,
   apiSecret: process.env.BINANCE_SECRET_KEY,
@@ -27,16 +27,32 @@ app.post("/webhook", async (req, res) => {
       return res.status(400).send("Invalid signal");
     }
 
-    let orderSide = side === "buy" ? "BUY" : "SELL";
+    let order;
 
-    await client.futuresOrder({
-      symbol: symbol.replace(".P", ""),
-      side: orderSide,
-      type: "MARKET",
-      quantity: 1
-    });
+    // ===== MỞ LONG =====
+    if (side === "buy") {
+      order = await client.futuresOrder({
+        symbol: symbol.replace(".P", ""),
+        side: "BUY",
+        type: "MARKET",
+        quantity: 1
+      });
 
-    console.log("✅ Order sent to Binance");
+      console.log("🟢 LONG opened");
+    }
+
+    // ===== ĐÓNG LONG =====
+    if (side === "sell") {
+      order = await client.futuresOrder({
+        symbol: symbol.replace(".P", ""),
+        side: "SELL",
+        type: "MARKET",
+        quantity: 1,
+        reduceOnly: true
+      });
+
+      console.log("🔴 LONG closed");
+    }
 
     res.status(200).send("Trade executed");
 
