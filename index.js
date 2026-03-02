@@ -1,19 +1,20 @@
-const express = require("express");
-const app = express();
+import express from "express";
 
+const app = express();
 app.use(express.json());
 
-// Test bot sống
+// test homepage
 app.get("/", (req, res) => {
-  res.send("Bot đang chạy");
+  res.send("Bot is running 🚀");
 });
 
-// Webhook nhận tín hiệu
+// 👇 QUAN TRỌNG - nhận webhook từ TradingView
 app.post("/webhook", (req, res) => {
-  console.log("Tín hiệu nhận:", req.body);
-  res.send("Đã nhận");
+  console.log("📩 Received signal:", req.body);
+  res.status(200).send("ok");
 });
 
-app.listen(3000, () => {
-  console.log("Máy chủ chạy cổng 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
 });
